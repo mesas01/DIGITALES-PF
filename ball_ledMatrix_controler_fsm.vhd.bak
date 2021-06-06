@@ -1,0 +1,1024 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+------------------------------------------
+ENTITY ball_ledMatrix_controler_fsm IS 
+	PORT ( clk        : IN STD_LOGIC;
+			 rst        : IN STD_LOGIC;
+			 LEDS        : IN STD_LOGIC_VECTOR(55 DOWNTO 0);
+			 tick			: IN STD_LOGIC;
+			 PIN_1   	: OUT STD_LOGIC;
+			 PIN_2   	: OUT STD_LOGIC;
+			 PIN_3   	: OUT STD_LOGIC;
+			 PIN_4   	: OUT STD_LOGIC;
+			 PIN_5   	: OUT STD_LOGIC;
+			 PIN_6   	: OUT STD_LOGIC;
+			 PIN_7   	: OUT STD_LOGIC;
+			 PIN_8   	: OUT STD_LOGIC;
+			 PIN_9   	: OUT STD_LOGIC;
+			 PIN_10   	: OUT STD_LOGIC;
+			 PIN_11  	: OUT STD_LOGIC;
+			 PIN_12  	: OUT STD_LOGIC;
+			 PIN_13  	: OUT STD_LOGIC;
+			 PIN_14  	: OUT STD_LOGIC;
+			 PIN_15  	: OUT STD_LOGIC;
+			 PIN_16  	: OUT STD_LOGIC);
+			 
+END ball_ledMatrix_controler_fsm;
+------------------------------------------
+ARCHITECTURE my_arch OF  ball_ledMatrix_controler_fsm IS
+	TYPE state IS (stby, LED_0_1, LED_1_1, LED_2_1, LED_3_1, LED_4_1, LED_5_1, LED_6_1, LED_7_1,
+								LED_0_2, LED_1_2, LED_2_2, LED_3_2, LED_4_2, LED_5_2, LED_6_2, LED_7_2,
+								LED_0_3, LED_1_3, LED_2_3, LED_3_3, LED_4_3, LED_5_3, LED_6_3, LED_7_3,
+								LED_0_4, LED_1_4, LED_2_4, LED_3_4, LED_4_4, LED_5_4, LED_6_4, LED_7_4,
+								LED_0_5, LED_1_5, LED_2_5, LED_3_5, LED_4_5, LED_5_5, LED_6_5, LED_7_5,
+								LED_0_6, LED_1_6, LED_2_6, LED_3_6, LED_4_6, LED_5_6, LED_6_6, LED_7_6,
+								LED_0_7, LED_1_7, LED_2_7, LED_3_7, LED_4_7, LED_5_7, LED_6_7, LED_7_7);
+	SIGNAL pr_state, nx_state: state;
+	
+BEGIN
+	
+	-- combitational section----------------
+	PROCESS (rst, clk)
+	BEGIN 
+		IF (rst='1') THEN
+			pr_state <= stby;
+		ELSIF (rising_edge(clk)) THEN 
+			pr_state <= nx_state;
+		END IF;
+	END PROCESS;		
+	
+	-- upper section------------------------
+	PROCESS (LEDS, tick, pr_state)
+	BEGIN 
+		CASE pr_state IS
+		-------------------------------------
+			WHEN stby =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF 	(LEDS(0)='1')  THEN nx_state <= LED_0_1; 
+				ELSIF (LEDS(1)='1')  THEN nx_state <= LED_1_1;
+				ELSIF (LEDS(2)='1')  THEN nx_state <= LED_2_1;
+				ELSIF (LEDS(3)='1')  THEN nx_state <= LED_3_1;
+				ELSIF (LEDS(4)='1')  THEN nx_state <= LED_4_1;
+				ELSIF (LEDS(5)='1')  THEN nx_state <= LED_5_1;
+				ELSIF (LEDS(6)='1')  THEN nx_state <= LED_6_1;
+				ELSIF (LEDS(7)='1')  THEN nx_state <= LED_7_1;
+				ELSIF (LEDS(8)='1')  THEN nx_state <= LED_0_2;
+				ELSIF (LEDS(9)='1')  THEN nx_state <= LED_1_2;
+				ELSIF (LEDS(10)='1') THEN nx_state <= LED_2_2;
+				ELSIF (LEDS(11)='1') THEN nx_state <= LED_3_2;
+				ELSIF (LEDS(12)='1') THEN nx_state <= LED_4_2;
+				ELSIF (LEDS(13)='1') THEN nx_state <= LED_5_2;
+				ELSIF (LEDS(14)='1') THEN nx_state <= LED_6_2;
+				ELSIF (LEDS(15)='1') THEN nx_state <= LED_7_2;
+				ELSIF (LEDS(16)='1') THEN nx_state <= LED_0_3;
+				ELSIF (LEDS(17)='1') THEN nx_state <= LED_1_3;
+				ELSIF (LEDS(18)='1') THEN nx_state <= LED_2_3;
+				ELSIF (LEDS(19)='1') THEN nx_state <= LED_3_3;
+				ELSIF (LEDS(20)='1') THEN nx_state <= LED_4_3;
+				ELSIF (LEDS(21)='1') THEN nx_state <= LED_5_3;
+				ELSIF (LEDS(22)='1') THEN nx_state <= LED_6_3;
+				ELSIF (LEDS(23)='1') THEN nx_state <= LED_7_3;
+				ELSIF (LEDS(24)='1') THEN nx_state <= LED_0_4;
+				ELSIF (LEDS(25)='1') THEN nx_state <= LED_1_4;
+				ELSIF (LEDS(26)='1') THEN nx_state <= LED_2_4;
+				ELSIF (LEDS(27)='1') THEN nx_state <= LED_3_4;
+				ELSIF (LEDS(28)='1') THEN nx_state <= LED_4_4;
+				ELSIF (LEDS(29)='1') THEN nx_state <= LED_5_4;
+				ELSIF (LEDS(30)='1') THEN nx_state <= LED_6_4;
+				ELSIF (LEDS(31)='1') THEN nx_state <= LED_7_4;
+				ELSIF (LEDS(32)='1') THEN nx_state <= LED_0_5;
+				ELSIF (LEDS(33)='1') THEN nx_state <= LED_1_5;
+				ELSIF (LEDS(34)='1') THEN nx_state <= LED_2_5;
+				ELSIF (LEDS(35)='1') THEN nx_state <= LED_3_5;
+				ELSIF (LEDS(36)='1') THEN nx_state <= LED_4_5;
+				ELSIF (LEDS(37)='1') THEN nx_state <= LED_5_5;
+				ELSIF (LEDS(38)='1') THEN nx_state <= LED_6_5;
+				ELSIF (LEDS(39)='1') THEN nx_state <= LED_7_5;
+				ELSIF (LEDS(40)='1') THEN nx_state <= LED_0_6;
+				ELSIF (LEDS(41)='1') THEN nx_state <= LED_1_6;
+				ELSIF (LEDS(42)='1') THEN nx_state <= LED_2_6;
+				ELSIF (LEDS(43)='1') THEN nx_state <= LED_3_6;
+				ELSIF (LEDS(44)='1') THEN nx_state <= LED_4_6;
+				ELSIF (LEDS(45)='1') THEN nx_state <= LED_5_6;
+				ELSIF (LEDS(46)='1') THEN nx_state <= LED_6_6;
+				ELSIF (LEDS(47)='1') THEN nx_state <= LED_7_6;
+				ELSIF (LEDS(48)='1') THEN nx_state <= LED_0_7;
+				ELSIF (LEDS(49)='1') THEN nx_state <= LED_1_7;
+				ELSIF (LEDS(50)='1') THEN nx_state <= LED_2_7;
+				ELSIF (LEDS(51)='1') THEN nx_state <= LED_3_7;
+				ELSIF (LEDS(52)='1') THEN nx_state <= LED_4_7;
+				ELSIF (LEDS(53)='1') THEN nx_state <= LED_5_7;
+				ELSIF (LEDS(54)='1') THEN nx_state <= LED_6_7;
+				ELSIF (LEDS(55)='1') THEN nx_state <= LED_7_7;
+				ELSE  
+					nx_state <= stby;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_1 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '0';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '0';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '0';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '0';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '0';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_1 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '1';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '0';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_1;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_2 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '0';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '0';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '0';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '0';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '0';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_2 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '1';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '0';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_2;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_3 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '0';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '0';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '0';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '0';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '0';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_3 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '1';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '0';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_3;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_4 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '0';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '0';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '0';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '0';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '0';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_4 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '1';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '0';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_4;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_5 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '0';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '0';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '0';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '0';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '0';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_5 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '1';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '0';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_5;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_6 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '0';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '0';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '0';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '0';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '0';		PIN_15 <= '1';
+				PIN_5  <= '1';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_6 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '1';
+				PIN_5  <= '0';		PIN_16 <= '0';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_0_7 =>
+				PIN_9  <= '0';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_0_7;
+				END IF;
+		-------------------------------------
+			WHEN LED_1_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '0';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_1_7;
+				END IF;
+		-------------------------------------
+			WHEN LED_2_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '0';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_2_7;
+				END IF;
+		-------------------------------------
+			WHEN LED_3_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '0';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_3_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_4_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '0';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_4_7;
+				END IF;
+		-------------------------------------
+			WHEN LED_5_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '0';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_5_7;
+				END IF;
+		-------------------------------------
+			WHEN LED_6_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '0';		PIN_15 <= '0';
+				PIN_5  <= '1';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_6_6;
+				END IF;
+		-------------------------------------
+			WHEN LED_7_7 =>
+				PIN_9  <= '1';		PIN_13 <= '0';
+				PIN_14 <= '1';		PIN_3  <= '0';
+				PIN_8  <= '1';		PIN_4  <= '0';
+				PIN_12 <= '1';		PIN_10 <= '0';
+				PIN_1  <= '1';		PIN_6  <= '0';
+				PIN_7  <= '1';		PIN_11 <= '0';
+				PIN_2  <= '1';		PIN_15 <= '0';
+				PIN_5  <= '0';		PIN_16 <= '1';
+				
+				IF (tick='1') THEN 
+					nx_state <= stby;
+				ELSE 
+					nx_state <= LED_7_7;
+				END IF;
+		-------------------------------------
+			END CASE;
+		END PROCESS;
+END ARCHITECTURE;

@@ -1,0 +1,65 @@
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+---------------------------------------
+ENTITY raq_logic IS
+	PORT		(	clk		:	IN		STD_LOGIC;
+					rst		:	IN		STD_LOGIC;
+					ena		:	IN		STD_LOGIC;
+					syn_clr	:	IN		STD_LOGIC;
+					B1_up		:	IN		STD_LOGIC;
+					B1_dw		:	IN		STD_LOGIC;
+					B2_up		:	IN		STD_LOGIC;
+					B2_dw		:	IN		STD_LOGIC;
+					raq1		:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 0);
+					raq2		:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 0));
+END ENTITY;
+---------------------------------------
+ARCHITECTURE rtl OF raq_logic IS	
+	SIGNAL	raq1_s		: UNSIGNED(2 DOWNTO 0);
+	SIGNAL	raq1_next	: UNSIGNED(2 DOWNTO 0);
+	SIGNAL	raq2_s		: UNSIGNED(2 DOWNTO 0);
+	SIGNAL	raq2_next	: UNSIGNED(2 DOWNTO 0);
+	SIGNAL	B1_up_sig		: STD_LOGIC;
+	SIGNAL	B1_dw_sig		: STD_LOGIC;
+	SIGNAL	B2_up_sig		: STD_LOGIC;
+	SIGNAL	B2_dw_sig		: STD_LOGIC;
+	
+BEGIN
+
+	B1_up_sig <= '0' WHEN raq1_s < "000" ElSE B1_up;
+	B1_dw_sig <= '0' WHEN raq1_s > "111" ELSE B1_dw;
+	
+	B2_up_sig <= '0' WHEN raq2_s < "000" ElSE B2_up;
+	B2_dw_sig <= '0' WHEN raq2_s > "111" ELSE B2_dw;
+	
+	--NEXT STATE LOGIC
+	raq1_next	<=		"000" 		WHEN syn_clr ='1' ELSE
+							raq1_s + 1	WHEN (ena='1' AND B1_up_sig = '1' AND B1_dw_sig = '0')	ELSE
+							raq1_s - 1	WHEN (ena='1' AND B1_up_sig = '0' AND B1_dw_sig = '1')	ELSE
+							raq1_s;
+	
+	raq2_next	<=		"000" 		WHEN syn_clr ='1' ELSE
+							raq2_s + 1	WHEN (ena='1' AND B2_up_sig = '1' AND B2_dw_sig = '0')	ELSE
+							raq2_s - 1	WHEN (ena='1' AND B2_up_sig = '0' AND B2_dw_sig = '1')	ELSE
+							raq2_s;
+					
+	PROCESS(clk,rst)
+		VARIABLE	temp1	:	UNSIGNED(2 DOWNTO 0);
+		VARIABLE	temp2	:	UNSIGNED(2 DOWNTO 0);
+	BEGIN
+		IF(rst='1')THEN
+			temp1 := "000";
+			temp2 := "000";
+		ELSIF (rising_edge(clk)) THEN
+			IF (ena='1') THEN
+				temp1	:= raq1_next;
+				temp2	:= raq2_next;
+			END IF;
+		END IF;
+		raq1	<= STD_LOGIC_VECTOR(temp1);
+		raq1_s	<= temp1;
+		raq2	<= STD_LOGIC_VECTOR(temp2);
+		raq2_s	<= temp2;
+	END PROCESS;
+END ARCHITECTURE;

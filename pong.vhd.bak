@@ -1,0 +1,158 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+------------------------------------------
+ENTITY parking_fsm IS 
+	PORT ( clk        : IN STD_LOGIC;
+			 rst        : IN STD_LOGIC;
+			 s0         : IN STD_LOGIC;
+			 s1         : IN STD_LOGIC;
+			 tick			: IN STD_LOGIC;
+			 park_full 	: IN STD_LOGIC;
+			 park_empty	: IN STD_LOGIC;
+			 ena			: OUT STD_LOGIC;
+			 rst_c 		: OUT STD_LOGIC;
+			 enter		: OUT STD_LOGIC;
+			 exit_s		: OUT STD_LOGIC;
+			 car_enter  : OUT STD_LOGIC;
+			 car_exit   : OUT STD_LOGIC);
+END parking_fsm;
+------------------------------------------
+ARCHITECTURE my_arch OF  parking_fsm IS
+	TYPE state IS (stby, check_in1, check_in2, entering, count_in, check_out1, check_out2, leaving, count_out);
+	SIGNAL pr_state, nx_state: state;
+	
+BEGIN
+	
+	-- combitational section----------------
+	PROCESS (rst, clk)
+	BEGIN 
+		IF (rst='1') THEN
+			pr_state <= stby;
+		ELSIF (rising_edge(clk)) THEN 
+			pr_state <= nx_state;
+		END IF;
+	END PROCESS;		
+	
+	-- upper section------------------------
+	PROCESS (s0, s1, park_full, park_empty, tick, pr_state)
+	BEGIN 
+		CASE pr_state IS
+		-------------------------------------
+			WHEN stby =>
+				
+				IF (s0='1' AND s1='0' AND park_full='0') THEN
+					nx_state <= check_in1;
+				ELSIF (s0='0' AND s1='1' AND park_empty='0') THEN
+					nx_state <= check_out1;
+				ELSE 
+					nx_state <= stby;
+				END IF;
+		-------------------------------------
+			WHEN check_in1 =>
+				car_enter <= '0';
+				car_exit  <= '0';
+				enter <='0';
+				exit_s <='0';
+				rst_c <= '1';
+				ena <= '0';
+				IF (s0='1' AND s1='1') THEN 
+					nx_state <= check_in2;
+				ELSE 
+					nx_state <= check_in1;
+				END IF;
+		-------------------------------------
+			WHEN check_out1 =>
+				car_enter <= '0';
+				car_exit  <= '0';
+				enter <='0';
+				exit_s <='0';
+				rst_c <= '1';
+				ena <= '0';
+				IF (s0='1' AND s1='1') THEN 
+					nx_state <= check_out2;
+				ELSE 
+					nx_state <= check_out1;
+				END IF;
+		-------------------------------------
+			WHEN check_in2 =>
+				car_enter <= '0';
+				car_exit  <= '0';
+				enter <='0';
+				exit_s <='0';
+				rst_c <= '1';
+				ena <= '0';
+				IF (s0='0' AND s1='1') THEN 
+					nx_state <= entering;
+				ELSE 
+					nx_state <= check_in2;
+				END IF;
+		-------------------------------------
+			WHEN check_out2 =>
+				car_enter <= '0';
+				car_exit  <= '0';
+				enter <='0';
+				exit_s <='0';
+				rst_c <= '1';
+				ena <= '0';
+				IF (s0='1' AND s1='0') THEN 
+					nx_state <= leaving;
+				ELSE 
+					nx_state <= check_out2;
+				END IF;
+		-------------------------------------
+			WHEN entering =>
+				car_enter <= '0';
+				car_exit  <= '0';
+				enter <='1';
+				exit_s <='0';
+				rst_c <= '1';
+				ena <= '0';
+				IF (s0='0' AND s1='0') THEN 
+					nx_state <= count_in;
+				ELSE 
+					nx_state <= entering;
+				END IF;
+		-------------------------------------
+			WHEN leaving =>
+				car_enter <= '0';
+				car_exit  <= '0';
+				enter <='0';
+				exit_s <='1';
+				rst_c <= '1';
+				ena <= '0';
+				IF (s0='0' AND s1='0') THEN 
+					nx_state <= count_out;
+				ELSE 
+					nx_state <= leaving;
+				END IF;
+		-------------------------------------
+			WHEN count_in =>
+				car_enter <= '1';
+				car_exit  <= '0';
+				enter <='0';
+				exit_s <='0';
+				rst_c <= '0';
+				ena <= '1';
+				IF (tick = '1') THEN
+					nx_state <= stby;
+				ELSE 
+					nx_state <= count_in; 
+				END IF;
+		-------------------------------------
+			WHEN count_out =>
+				car_enter <= '0';
+				car_exit  <= '1';
+				enter <='0';
+				exit_s <='0';
+				rst_c <= '0';
+				ena <= '1';
+				IF (tick = '1') THEN
+					nx_state <= stby;
+				ELSE 
+					nx_state <= count_out; 
+				END IF;
+		-------------------------------------	
+			END CASE;
+		END PROCESS;
+END ARCHITECTURE;

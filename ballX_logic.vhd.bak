@@ -1,0 +1,40 @@
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+---------------------------------------
+ENTITY ballX_logic IS
+	PORT		(	clk		:	IN		STD_LOGIC;
+					rst		:	IN		STD_LOGIC;
+					ena		:	IN		STD_LOGIC;
+					syn_clr	:	IN		STD_LOGIC;
+					xb_up		:	IN		STD_LOGIC;
+					xb_dw		:	IN		STD_LOGIC;
+					xb			:	OUT	STD_LOGIC_VECTOR(3 DOWNTO 0));
+END ENTITY;
+---------------------------------------
+ARCHITECTURE rtl OF ballX_logic IS	
+	SIGNAL	xb_s		: UNSIGNED(3 DOWNTO 0);
+	SIGNAL	xb_next	: UNSIGNED(3 DOWNTO 0);
+	
+BEGIN
+
+	--NEXT STATE LOGIC
+	xb_next	<=		"000" 	WHEN syn_clr ='1' ELSE
+						xb_s + 1	WHEN (ena='1' AND xb_up = '1')	ELSE
+						xb_s - 1	WHEN (ena='1' AND xb_dw = '1')	ELSE
+						xb_s;
+					
+	PROCESS(clk,rst)
+		VARIABLE	temp	:	UNSIGNED(3 DOWNTO 0);
+	BEGIN
+		IF(rst='1')THEN
+			temp := "0000";
+		ELSIF (rising_edge(clk)) THEN
+			IF (ena='1') THEN
+				temp	:= xb_next;
+			END IF;
+		END IF;
+		xb	<= STD_LOGIC_VECTOR(temp);
+		xb_s	<= temp;
+	END PROCESS;
+END ARCHITECTURE;

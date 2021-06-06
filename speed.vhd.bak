@@ -1,0 +1,35 @@
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+---------------------------------------
+ENTITY speed IS
+	GENERIC	(	N			:			INTEGER	:= 16);
+	PORT		(	clk		:	IN		STD_LOGIC;
+					rst		:	IN		STD_LOGIC;
+					ena		:	IN		STD_LOGIC;
+					tick		:	OUT	STD_LOGIC_VECTOR(N-1 DOWNTO 0));
+END ENTITY;
+---------------------------------------
+ARCHITECTURE rtl OF speed IS	
+	SIGNAL	tick_s		: UNSIGNED(N-1 DOWNTO 0);
+	SIGNAL	tick_next	: UNSIGNED(N-1 DOWNTO 0);
+	
+BEGIN
+
+	--NEXT STATE LOGIC
+	tick_next	<=		tick_s - 1;
+					
+	PROCESS(clk,rst)
+		VARIABLE	temp	:	UNSIGNED(N-1 DOWNTO 0);
+	BEGIN
+		IF(rst='1')THEN
+			temp := "0110010110010000"
+		ELSIF (rising_edge(clk)) THEN
+			IF (ena='1') THEN
+				temp := tick_next;
+			END IF;
+		END IF;
+		tick	<= STD_LOGIC_VECTOR(temp);
+		tick_s	<= temp;
+	END PROCESS;
+END ARCHITECTURE;
